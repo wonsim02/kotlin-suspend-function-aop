@@ -11,6 +11,7 @@ plugins {
 
     // https://github.com/ryandens/javaagent-gradle-plugin
     id("com.ryandens.javaagent-application") version "0.4.2"
+    id("com.ryandens.javaagent-test") version "0.4.2"
 }
 
 allprojects {
@@ -26,8 +27,16 @@ allprojects {
 }
 
 dependencies {
+    implementation(kotlin("reflect"))
+    implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("org.aspectj:aspectjweaver:1.9.21.1")
     javaagent("org.aspectj:aspectjweaver:1.9.21.1")
+
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    testJavaagent("org.aspectj:aspectjweaver:1.9.21.1")
 }
 
 tasks {
@@ -35,5 +44,9 @@ tasks {
         kotlinOptions {
             jvmTarget = "15"
         }
+    }
+
+    withType<Test> {
+        useJUnitPlatform()
     }
 }
